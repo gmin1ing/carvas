@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		canvas{
+			border: 1px solid #eee;
+		}
+	</style>
+</head>
+<body>
+	<canvas width="600" height="400"></canvas>
+	<script>
+		
+		// 坐标系
+		// 1 确定原点
+		// 2 确定举例画布旁边的距离
+		// 3 确定坐标轴的长度
+		// 4 确定肩头的大小
+		// 5 绘制箭头填充
+		var myCanvas = document.querySelector('canvas');
+		var ctx = myCanvas.getContext('2d');
+		var space = 20;
+		var arrowSize = 10;
+		var canvasHeight = ctx.canvas.height;
+		var canvasWidth = ctx.canvas.width;
+		//计算原点
+		var x0 = space;
+		var y0 = canvasHeight - space;
+
+		//绘制x轴
+		ctx.beginPath();
+		ctx.moveTo(x0,y0);
+		ctx.lineTo(canvasWidth - space,y0);
+		ctx.stroke();
+		// 箭头
+		ctx.lineTo(canvasWidth - space-arrowSize, y0+arrowSize/2)
+		ctx.lineTo(canvasWidth - space-arrowSize, y0-arrowSize/2)
+		ctx.lineTo(canvasWidth - space,y0)
+		ctx.fill();
+
+		// 绘制y轴
+		ctx.beginPath();
+		ctx.moveTo(x0,y0);
+		ctx.lineTo(x0,space);
+		ctx.stroke();
+		// 箭头
+		ctx.moveTo(x0,space);
+		ctx.lineTo(x0+arrowSize/2,space + arrowSize);
+		ctx.lineTo(x0-arrowSize/2,space + arrowSize);
+		ctx.fill();
+	</script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		canvas {
+			border: 1px solid #ccc;
+		}
+	</style>
+</head>
+<body>
+	<canvas width="600" height="400"></canvas>
+	<script>
+		
+		var myCanvas = document.querySelector('canvas');
+		var ctx = myCanvas.getContext('2d');
+		
+		// 在画布中心绘制一段文字
+		// 1 申明一段文字
+		var str = '您吃了吗？';
+		// 2 确定画布中心
+		var w = ctx.canvas.width;
+		var h = ctx.canvas.height;
+		// 3 画一个十字架在画布的中心
+		ctx.beginPath();
+		ctx.moveTo(0,h/2-0.5);
+		ctx.lineTo(w,h/2-0.5);
+		ctx.moveTo(w/2-0.5,0);
+		ctx.lineTo(w/2-0.5,h);
+		ctx.strokeStyle='#eee';
+		ctx.stroke();
+		// 4 绘制文本
+		ctx.beginPath();
+		ctx.strokeStyle ='#000';
+		var x0 =w/2;
+		var y0 =h/2;
+		// 有文本属性 尺寸 字体 左右对齐方式 垂直对齐的方式
+		ctx.font = '40px Microsoft YaHet';
+		// 左右对齐方式（center left right star end）
+		ctx.textAlign ='center';
+		// 垂直对齐方式 baseline(top,bottom,middle)
+		ctx.textBaseline = 'middle';
+		// ctx.direction = 'rtl';
+		// ctx.strokeText(str,x0,y0);
+		ctx.fillText(str,x0,y0);
+		// 5 画一个下划线和文字一样长
+		ctx.beginPath();
+		// 获取文本的宽度
+		var width = ctx.measureText(str).width;
+		ctx.moveTo(x0-width/2,y0+20);
+		ctx.lineTo(x0+width/2,y0+20);
+		ctx.stroke();
+		
+		
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

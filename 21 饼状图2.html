@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		canvas {
+			border: 1px solid #ccc;
+		}
+	</style>
+</head>
+<body>
+	<canvas width="600" height="400"></canvas>
+	<script>
+		
+		var myCanvas = document.querySelector('canvas');
+		var ctx = myCanvas.getContext('2d');
+		
+		/*
+		1 绘制饼状图
+		1.1 根据数据绘制一个饼状图
+		1.2 绘制标题 从扇形的弧中心伸出一条线在画一条横线，在横线上面写文字标题
+		1.3 在画布的左上角绘制说明 一个和扇形一样的矩形，旁白是文字说明
+		*/
+	
+		var PieChart =function(ctx) {
+			this.ctx = ctx || document.querySelector('canvas').getContext('2d');
+			this.w = this.ctx.canvas.width;
+			this.h = this.ctx.canvas.height;
+			this.x0 = this.w/2 + 60;
+			this.y0 = this.h/2;
+			this.radius = 150;
+			this.outLine = 20; // 确定伸出去的线的长度
+			this.rectW = 30;// 说明 矩形的宽度
+			this.rectH = 14;// 说明 矩形的高度
+			this.space = 10;// 说明 矩形的间距
+
+		}
+		PieChart.prototype.init=function(data){
+			// 1 准备数据
+			this.drawPie(data);
+		};
+		PieChart.prototype.drawPie=function(data){
+			var that = this;
+			// 1 转化弧度
+			var angleList = this.transformAngle(data);
+			// 2 绘制饼图
+			var startAngle = 0;
+			angleList.forEach(function(item,i){
+				var endAngle = startAngle + item.angle;
+				ctx.beginPath();
+				ctx.moveTo(that.x0,that.y0);
+				ctx.arc(that.x0,that.y0,that.radius,startAngle,endAngle);
+				var color = ctx.fillStyle=that.getRandomColor();
+				ctx.fill();
+				that.drawTitle(startAngle,item.angle,color,item.title);
+				that.drawDesc(i,item.title);
+				startAngle = endAngle;
+			});
+		};
+
+		PieChart.prototype.drawTitle=function(startAngle,angle,color,title){// 饼状图的 title说明
+			// 1 确定伸出去的线 通过圆心和伸出去的点 确定这条线
+			// 2 确定伸出去的点 需要确定伸出去的线的长度
+			// 3 固定伸出去的线的长度
+			// 4 计算出这个点的坐标
+			// 5 需要角度考核斜边的长度
+			// 5.1 斜边 ： r+伸出去的长度
+			// 5.2 使用弧度 当前扇形的起始弧度 + 对应弧度的一半
+			// 5.3 outX = x0+cos(angle)*(r+outline)
+			// 5.3 outY = y0+sin(angle)*(r+outline)
+			var edge = this.radius + this.outLine;
+			var edgeX = edge * Math.cos(startAngle+ angle/2);
+			var edgeY = edge * Math.sin(startAngle+ angle/2);
+			// 出去的点坐标
+			var outX = this.x0 +edgeX;
+			var outY = this.y0 +edgeY;
+			this.ctx.beginPath();
+			this.ctx.moveTo(this.x0,this.y0);
+			this.ctx.lineTo(outX,outY);
+			this.ctx.strokeStyle=color;
+			
+			// 画文字和下划线
+			// 线的方向如何判断： 伸出去的点在x0点左边，线的方向左边；伸出去的点在x0点右边，线的方向右边
+			// 结束的点坐标，和文字大小有关系
+			this.ctx.font = '12px Microsoft YaHet';
+			var textWidth = this.ctx.measureText(title).width;
+			if (outX > this.x0) {// 右
+				this.ctx.lineTo(outX + textWidth,outY);
+				this.ctx.textAlign = 'left';
+			} else {//左
+				this.ctx.lineTo(outX - textWidth,outY);
+				this.ctx.textAlign = 'right';
+			}
+
+			this.ctx.stroke();
+			this.ctx.textBaseline = 'bottom';
+			this.ctx.fillText(title,outX,outY);
+
+		};
+		PieChart.prototype.drawDesc=function(index,title){//饼状图的颜色说明
+			// 矩形的大小
+			// 距离上下的大小
+			// 矩形之间的距离
+			this.ctx.fillRect(this.space, this.space+index *(this.rectH + this.space),this.rectW, this.rectH);
+			// 绘制文字
+			this.ctx.beginPath();
+			this.ctx.textAlign='left';
+			this.ctx.textBaseline='top';
+			this.ctx.font = '14px Microsoft YaHet';
+			this.ctx.fillText(title, this.space + this.rectW +5, this.space+index *(this.rectH + this.space));
+
+		};
+		PieChart.prototype.transformAngle =function(data){//转化成弧度
+			var total =0;
+			data.forEach(function(item,i){
+				total += item.num;
+			});
+			// 计算弧度 追加
+			data.forEach(function(item,i){
+				var angle = item.num / total * Math.PI * 2;
+				item.angle = angle;
+			}); 
+			// console.log(data);
+			return data;
+		};
+		PieChart.prototype.getRandomColor=function(){
+			var r = Math.floor(Math.random()*256);
+			var g = Math.floor(Math.random()*256);
+			var b = Math.floor(Math.random()*256);
+			return 'rgb('+r+','+g+','+b+')' ;
+		};
+
+
+		
+		var data =[
+			{
+				title:'15-20岁',
+				num: 6
+			},
+			{
+				title:'20-25岁',
+				num: 30
+			},
+			{
+				title:'25-30岁',
+				num: 10
+			},
+			{
+				title:'30-35岁',
+				num: 8
+			}
+		];
+
+		var PieChart = new PieChart();
+		PieChart.init(data);
+
+		
+
+		
+		
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

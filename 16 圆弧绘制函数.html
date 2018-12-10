@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		canvas {
+			border: 1px solid #ccc;
+		}
+	</style>
+</head>
+<body>
+	<canvas width="600" height="400"></canvas>
+	<script>
+		
+		var myCanvas = document.querySelector('canvas');
+		var ctx = myCanvas.getContext('2d');
+
+		// 确定 圆心坐标
+		// 确定圆的半径
+		// 确定起始绘制位置和结束位置， 确定弧的长度和位置， startAngle， endAngle 弧度
+		// 绘制方法，默认是顺时针
+		
+		// 在中心位置绘制一个半径150px的圆弧，圆弧在右下角
+		var w = ctx.canvas.width;
+		var h = ctx.canvas.height;
+		ctx.arc(w/2,h/2,150,0,Math.PI/2);// 顺时针
+		// ctx.arc(w/2,h/2,150,0,Math.PI/2,true);// 逆时针
+		// ctx.arc(w/2,h/2,150,Math.PI/2,Math.PI); //左下角
+		// ctx.arc(w/2,h/2,150,Math.PI/2,Math.PI*2); 
+		ctx.stroke();
+
+		
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		canvas {
+			border: 1px solid #ccc;
+		}
+	</style>
+</head>
+<body>
+	<canvas width="600" height="400"></canvas>
+	<script>
+		var myCanvas = document.querySelector('canvas');
+		var ctx = myCanvas.getContext('2d');
+
+		ctx.beginPath(); 
+		ctx.moveTo(100,100);
+		ctx.lineTo(100,300);
+		ctx.stroke();
+
+		ctx.beginPath(); 
+		ctx.moveTo(300,100);
+		ctx.lineTo(300,300);
+		ctx.stroke();
+
+		ctx.beginPath(); 
+		ctx.moveTo(100,100);
+		ctx.lineTo(300,100);
+		ctx.lineWidth = 1;
+		ctx.lineCap = 'butt'; 
+		ctx.lineJoin='miter'; 
+		ctx.setLineDash([5,10,15]);// 设置虚线排列方式
+		console.log(ctx.getLineDash()); // 获取不重复的那一段段排列方式 
+		// 正值往后偏移
+		// 负值往前偏移
+		ctx.stroke();
+
+		ctx.beginPath(); 
+		ctx.moveTo(100,200);
+		ctx.lineTo(300,200);
+		ctx.lineWidth = 1;
+		ctx.lineCap = 'butt'; 
+		ctx.lineJoin='miter'; 
+		ctx.setLineDash([5,10,15]);// 设置虚线排列方式
+		console.log(ctx.getLineDash()); // 获取不重复的那一段段排列方式 
+		// 正值往后偏移
+		// 负值往前偏移
+		ctx.lineDashOffset=-20;
+		ctx.stroke();
+		
+		
+
+
+		ctx.beginPath(); 
+		ctx.moveTo(100,300);
+		ctx.lineTo(300,300);
+		ctx.lineWidth = 1;
+		ctx.lineCap = 'butt'; 
+		ctx.lineJoin='miter'; 
+		ctx.setLineDash([5,10,15]);// 设置虚线排列方式
+		console.log(ctx.getLineDash()); // 获取不重复的那一段段排列方式 
+		// 正值往后偏移
+		// 负值往前偏移
+		ctx.lineDashOffset=20;
+		ctx.stroke();
+	</script>
+</body>
+</html>
